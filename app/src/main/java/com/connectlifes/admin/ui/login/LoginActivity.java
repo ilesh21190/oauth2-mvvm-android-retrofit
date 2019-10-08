@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.connectlifes.admin.ui.dashboard.DashboardActivity;
+import com.connectlifes.admin.MainActivity;
 import com.connectlifes.admin.R;
 import com.connectlifes.admin.oauth2.response.AccessTokenResponse;
 import com.connectlifes.admin.oauth2.service.UtilityService;
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                     utilityService.saveAccessTokenToPreference(loginResult);
                     updateUiWithUser(loginResult);
                     Log.i(TAG,"Access Token from preference : "+utilityService.getAccessTokenFromPreference());
-                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }
 

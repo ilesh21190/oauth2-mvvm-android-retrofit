@@ -1,43 +1,32 @@
-package com.connectlifes.admin.ui.dashboard;
+package com.connectlifes.admin;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.connectlifes.admin.R;
-import com.connectlifes.admin.oauth2.response.DashboardResponse;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-public class DashboardActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
-    private static final String TAG = "Admin-DashboardAc";
-    private DashboardViewModel dashboardViewModel;
+    private static final String TAG = "Admin-MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        dashboardViewModel = ViewModelProviders.of(this, new DashboardViewModelFactory(getApplicationContext()))
-                .get(DashboardViewModel.class);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +48,7 @@ public class DashboardActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        getDashboardCounts();
+
     }
 
     @Override
@@ -76,37 +65,4 @@ public class DashboardActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    public void getDashboardCounts(){
-        dashboardViewModel.getDashboardCount();
-        Log.d(TAG,"I am getDashboardCounts from activity");
-        dashboardViewModel.getDashboardCountResult().observe(this, new Observer<DashboardResponse>() {
-            @Override
-            public void onChanged(@Nullable DashboardResponse dashboardResponse) {
-                Log.i(TAG,"I am called, YAHOOO!!!");
-                Log.i(TAG,dashboardResponse.toString());
-                if (dashboardResponse == null) {
-                    return;
-                } else if( dashboardResponse.getError() != null){
-                    showDashboardCountError(dashboardResponse.getErrorDescription());
-                } else if (dashboardResponse.getT() != null) {
-                    showDashboardCountError(dashboardResponse.getT().getLocalizedMessage());
-                }else {
-                    showSuccessMessage(dashboardResponse); //TODO  :  later replace with actual UI update code
-                }
-                setResult(Activity.RESULT_OK);
-                //Complete and destroy login activity once successful
-//                finish();
-            }
-        });
-
-
-    }
-
-    public void showDashboardCountError(String error){
-        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
-    }
-
-    public void showSuccessMessage(DashboardResponse response){
-        Toast.makeText(getApplicationContext(), response.getMessage(), Toast.LENGTH_LONG).show();
-    }
 }

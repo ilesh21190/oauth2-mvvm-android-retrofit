@@ -5,8 +5,8 @@ import android.util.Log;
 import com.connectlifes.admin.oauth2.client.ServiceGenerator;
 import com.connectlifes.admin.oauth2.response.AccessTokenResponse;
 import com.connectlifes.admin.oauth2.response.ErrorResponse;
+import com.connectlifes.admin.oauth2.service.Listener;
 import com.connectlifes.admin.oauth2.service.OauthService;
-import com.connectlifes.admin.ui.login.LoginListener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class LoginRepository {
         return instance;
     }
 
-    public void login(String username, String password , final LoginListener listener){
+    public void login(String username, String password , final Listener<AccessTokenResponse> listener){
         // handle login
         Log.d(TAG, "Finally inside Repository");
 

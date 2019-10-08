@@ -38,7 +38,7 @@ public class ServiceGenerator {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         httpClient = new OkHttpClient.Builder().addInterceptor(new APIHeaderInterceptor(c)).addInterceptor(interceptor);;
         builder = new Retrofit.Builder()
-                .baseUrl(OauthConstant.BASE_URL)
+                .baseUrl(OauthConstant.BASE_URL+"/admin/")
                 .addConverterFactory(GsonConverterFactory.create());
 
         OkHttpClient client = httpClient.build();

@@ -6,6 +6,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface DashboardService {
-    @GET("me")
+    @GET("system-user/v1/me")
     Call<DashboardResponse> getDashboardCounts();
 }

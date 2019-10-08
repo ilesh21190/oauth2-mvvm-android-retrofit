@@ -4,49 +4,46 @@ import android.content.Context;
 import android.util.Log;
 
 import com.connectlifes.admin.oauth2.client.ServiceGenerator;
-import com.connectlifes.admin.oauth2.response.DashboardResponse;
+import com.connectlifes.admin.oauth2.response.APIResponse;
 import com.connectlifes.admin.oauth2.response.ErrorResponse;
-import com.connectlifes.admin.oauth2.service.DashboardService;
+import com.connectlifes.admin.oauth2.response.Leads;
+import com.connectlifes.admin.oauth2.service.LeadService;
 import com.connectlifes.admin.oauth2.service.Listener;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Class that requests authentication and user information from the remote data source and
- * maintains an in-memory cache of login status and user credentials information.
- */
-public class DashboardRepository {
+public class LeadRepository {
+    private final static String TAG = "Admin-LeadRepository";
 
-    private final static String TAG = "Admin-DashboardRepo";
-
-    private static volatile DashboardRepository instance;
+    private static volatile LeadRepository instance;
 
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
-    private static DashboardService dashboardService;
+    private static LeadService leadService;
     // private constructor : singleton access
-    private DashboardRepository(DashboardService dashboardService) {
-        this.dashboardService = dashboardService;
+    private LeadRepository(LeadService leadService) {
+        this.leadService = leadService;
     }
 
-    public static DashboardRepository getInstance(Context context) {
-        if (dashboardService== null) {
-            dashboardService= ServiceGenerator.ApiService(DashboardService.class,context);
+    public static LeadRepository getInstance(Context context) {
+        if (leadService== null) {
+            leadService= ServiceGenerator.ApiService(LeadService.class,context);
         }
-        instance = new DashboardRepository(dashboardService);
+        instance = new LeadRepository(leadService);
         return instance;
     }
 
-    public void getDashboardCount(final Listener<DashboardResponse> listener){
+    public void findAllLeads(final Listener<APIResponse<ArrayList<Leads>>> listener){
 
-        dashboardService.getDashboardCounts().enqueue(new Callback<DashboardResponse>() {
+        leadService.findAllLeads().enqueue(new Callback<APIResponse<ArrayList<Leads>>>() {
             @Override
-            public void onResponse(Call<DashboardResponse> call, Response<DashboardResponse> response) {
+            public void onResponse(Call<APIResponse<ArrayList<Leads>>> call, Response<APIResponse<ArrayList<Leads>>> response) {
                 if (response.code() == 200) {
                     Log.i(TAG, response.body().toString());
                     listener.onSuccess(response.body());
@@ -61,17 +58,17 @@ public class DashboardRepository {
                     }
                     Log.i(TAG, errorResponse.toString());
 
-                    listener.onError(new DashboardResponse(errorResponse.getError(),errorResponse.getErrorDescription()));
+                    listener.onError(new APIResponse<ArrayList<Leads>>(errorResponse.getError(),errorResponse.getErrorDescription()));
                 }
 
             }
 
             @Override
-            public void onFailure(Call<DashboardResponse> call, Throwable t) {
+            public void onFailure(Call<APIResponse<ArrayList<Leads>>> call, Throwable t) {
                 t.getStackTrace();
-                listener.onError(new DashboardResponse(t));
+                listener.onError(new APIResponse<ArrayList<Leads>>(t));
             }
         });
     }
-}
 
+}

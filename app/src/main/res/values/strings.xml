@@ -23,4 +23,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_login">Sign in</string>
+
+    <string name="lead_name_label">Name</string>
+    <string name="lead_email_label">Email</string>
+    <string name="lead_phone_label">Phone</string>
+    <string name="lead_address_label">Address</string>
 </resources>

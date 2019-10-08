@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.connectlifes.admin.R;
 import com.connectlifes.admin.data.LoginRepository;
 import com.connectlifes.admin.oauth2.response.AccessTokenResponse;
+import com.connectlifes.admin.oauth2.service.Listener;
 
 public class LoginViewModel extends ViewModel {
 
@@ -32,7 +33,7 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         Log.d(TAG,"reach into LoginViewModel "+username+" "+password);
-        loginRepository.login(username, password, new LoginListener() {
+        loginRepository.login(username, password, new Listener<AccessTokenResponse>() {
             @Override
             public void onSuccess(AccessTokenResponse accessTokenResponse) {
                 loginResult.setValue(accessTokenResponse);

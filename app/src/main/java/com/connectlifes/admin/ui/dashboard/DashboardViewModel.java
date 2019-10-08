@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.connectlifes.admin.data.DashboardRepository;
 import com.connectlifes.admin.oauth2.response.DashboardResponse;
+import com.connectlifes.admin.oauth2.service.Listener;
 
 public class DashboardViewModel extends ViewModel {
 
@@ -23,7 +24,7 @@ public class DashboardViewModel extends ViewModel {
     }
 
     public void getDashboardCount() {
-        dashboardRepository.getDashboardCount(new DashboardListener() {
+        dashboardRepository.getDashboardCount(new Listener<DashboardResponse>() {
             @Override
             public void onSuccess(DashboardResponse dashboardResponse) {
                 dashboardResult.setValue(dashboardResponse);
